@@ -10,16 +10,19 @@ keyword = "nintendo"
 distance = "1000"
 url = mainurl + language + "/results?q=" + keyword + "&location.distance=1000&location.isDomestic=true&sort=d%3Adate_start"
 
-#
+#Setting up the driver
 driver = webdriver.Chrome(PATH)
 driver.get(url)
  
-#Test: get the first img of results
-imagewrapper = driver.find_element_by_xpath("//*[@id='__next']/div[2]/div[3]/div[2]/div[1]/div/div/div[3]/div[1]/a/div/div/div[1]")
-image = imagewrapper.find_element_by_tag_name("img").get_attribute("src")
-print(image)
+driver.implicitly_wait(5)
 
-#get the results wrapper
-xresult = "//*[@id='__next']/div[2]/div[3]/div[2]/div[1]/div/div/div[3]"
-results = driver.find_element_by_xpath(xresult)
+#printing links of recent listings
+items = driver.find_elements_by_class_name("ffXkEX")
+titles = driver.find_elements_by_class_name("kjCAzp")
+prices = driver.find_elements_by_class_name("gSgzGm")
+descriptions = driver.find_elements_by_class_name("bqTBXL")
 
+for item in items:
+	links = item.find_elements_by_tag_name("a")
+	for link in links:
+		print(link.get_attribute("href"))
