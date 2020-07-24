@@ -1,15 +1,10 @@
 class Listing:
 	
-	title
-	price
-	imagesrc
-	description
-
-	def __init__(self, title, price, imagesrc):
+	def __init__(self, title, price, imagesrc, description):
 		self.title = title
 		self.price = price
 		self.imagesrc = imagesrc
-		self.description 
+		self.description = description
 
 	def getTitle(self):
 		return self.title

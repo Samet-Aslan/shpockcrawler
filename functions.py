@@ -1,4 +1,5 @@
 from selenium import webdriver
+from Listing import Listing
 
 def startSearch():
 
@@ -14,10 +15,10 @@ def setUpConnection(path,url):
 	driver = webdriver.Chrome(path)
 	driver.get(url)
 	driver.implicitly_wait(5)
-	getTitles(driver)
+	createObjects(driver)
 
-def getTitles(driver):
-	titles = []
+def createObjects(driver):
+	my_listings = []
 	itemcards = driver.find_elements_by_class_name("ffXkEX")
 	for itemcard in itemcards:
 		hrefs = itemcard.find_elements_by_class_name("kvbvf")
@@ -26,11 +27,26 @@ def getTitles(driver):
 			for container in containers:
 				cards = container.find_elements_by_class_name("hpjVjR")
 				for card in cards:
-					datas = card.find_elements_by_class_name("kbnIAg")
-					for data in datas:
-						titles.append(data.find_element_by_class_name("kjCAzp").get_attribute("innerHTML"))	
-	printTitle(titles)
+					boxes = card.find_elements_by_class_name("dADjlv")
+					prices = card.find_elements_by_class_name("kbnIAg")
+					for price in prices:
+						theprice = price.find_element_by_class_name("gSgzGm").get_attribute("innerHTML")
+					for box in boxes:
+						listings = box.find_elements_by_tag_name("img")
+						for listing in listings:
+							title = listing.get_attribute("title")
+							image = listing.get_attribute("src")
+							description = listing.get_attribute("alt")
+							listingobject = Listing(title, theprice , image, description)
+							my_listings.append(listingobject)
+	printObjects(my_listings)
 
-def printTitle(titles):
-	for title in titles:
-		print(title)
+
+def printObjects(listitems):
+	for item in listitems:
+		print(item.getTitle())
+		print(item.getPrice())
+		print(item.getImgsrc())
+		print(item.getDescription())
+
+
